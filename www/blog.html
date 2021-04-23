@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fonts/fontawesome-free-5.13.0-web/css/all.min.css"> 
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Logo</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="information.html">Information</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="information.html">Information</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="articles">
+        <div id="articles-item">
+            <h1>Les Fruits</h1>
+            <img id="imageArticle">
+            <p id="descriptionArticle"></p>
+            <button id="voirArticle"></button>
+        </div>
+    </div>
+    <main>
+        <article class="banner wrap">
+            <img src="img/bananier.jpg" alt="Bananier" width="940" height="546">
+            <div class="banner-box">
+                <h1 class="banner-title mbn">Bananier</h1>
+                <p class="banner-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus optio magni
+                    repellendus, ad dignissimos, dolore laudantium assumenda eum doloremque ab ea, ex nostrum blanditiis
+                    libero omnis mollitia totam minus sed?</p>
+            </div>
+        </article>
+        <article class="banner wrap">
+            <img src="img/banane.jpg" alt="Bananier" width="940" height="546">
+            <div class="banner-box">
+                <h1 class="banner-title mbn">Des bananes</h1>
+                <p class="banner-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus optio magni
+                    repellendus, ad dignissimos, dolore laudantium assumenda eum doloremque ab ea, ex nostrum blanditiis
+                    libero omnis mollitia totam minus sed?</p>
+            </div>
+        </article>
+        <article class="banner wrap">
+            <img src="img/mangue.jpg" alt="fruit" width="940" height="546">
+            <div class="banner-box">
+                <h1 class="banner-title mbn">Des mangue</h1>
+                <p class="banner-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus optio magni
+                    repellendus, ad dignissimos, dolore laudantium assumenda eum doloremque ab ea, ex nostrum blanditiis
+                    libero omnis mollitia totam minus sed?</p>
+            </div>
+        </article>
+        <article class="banner wrap">
+            <img src="img/fruit1.jpeg" alt="fruit" width="940" height="546">
+            <div class="banner-box">
+                <h1 class="banner-title mbn">Des fruits</h1>
+                <p class="banner-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus optio magni
+                    repellendus, ad dignissimos, dolore laudantium assumenda eum doloremque ab ea, ex nostrum blanditiis
+                    libero omnis mollitia totam minus sed?</p>
+            </div>
+        </article>
+
+        <div class="main-carousel">
+            <figure class="carousel-cell">
+                <img src="img/fruit1.jpeg" alt="" width="1363" height="908">
+                <figcaption>
+                    <p><strong>2021</strong></p>
+                    Fruits
+                </figcaption>
+            </figure>
+            <figure class="carousel-cell">
+                <img src="img/fruits3.jpg" alt="" width="1363" height="908">
+                <figcaption>
+                    <p><strong>2021</strong></p>
+                    Fruits
+                </figcaption>
+            </figure> 
+            <figure class="carousel-cell">
+                <img src="img/banane.jpg" alt="" width="1363" height="908">
+                <figcaption>
+                    <p><strong>2021</strong></p>
+                    Fruits
+                </figcaption>
+            </figure> 
+        </div>
+        <hr>
+
+    </main>
+    <script>
+        var articlesManager = {
+
+            showArticleList: function () {
+                $.ajax({
+                    url: " http://localhost:5557/articles", // La ressource ciblée, pour Android utiliser http://10.0.2.2:5556/personnes/
+                    type: "GET", // Le type de la requête HTTP,
+                    cache: false, // n'enregistre pas temporairement des copies de données
+                    dataType: 'json', //  Le type de données à recevoir, ici, du json
+                    success: function (data) {
+                        console.log(data);
+                        //$('#personList li').remove();
+                        $.each(data, function (index, article) {
+                            $('<li>')
+                                .text(article.libelle + ' : ' + article.description1)
+                                .append('img src' + article.urlPhotoPr)
+                                .attr('value', article.id).appendTo($('#articleList'))
+                                .append("<button onclick=\"articleManager.showArticleDetails(\'" + article.id + "\');\" >Edit</button>")
+                                ;
+                        });
+                        $('#articleListPanel').show();
+                    }
+                });
+            },
+
+            showArticleDetails: function (id) {
+                if (id == null) return;
+                $('#articleSearchPanel').hide();
+                $.ajax({
+                    url: "http://localhost:5557/articles/" + id, // La ressource ciblée, pour Android utiliser http://10.0.2.2:5556/personnes/
+                    type: "GET", // Le type de la requête HTTP,
+                    cache: false, // n'enregistre pas temporairement des copies de données
+                    dataType: 'json', //  Le type de données à recevoir, ici, du json
+                    success: function (article) {
+                        console.log(article);
+                        $('#personDetailsPanel').show();
+                        $('#id').attr('value', article.id);
+                        $('#article').attr('value', article.libelle).focus();
+                        $('#description1').attr('value', article.description1); //
+                    }
+                });
+            }
+        }
+
+    </script>
+    <script src="cordova.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/materialize.js"></script>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $('.main-carousel').flickity({
+                autoPlay: 3000,
+                wrapAround: true,
+                groupCells: true
+
+            });
+        });
+    </script>
+
+</body>
+
+</html>
